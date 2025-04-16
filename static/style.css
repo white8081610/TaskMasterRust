@@ -1,0 +1,258 @@
+/* Global styles */
+* {
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+/* Application layout */
+.app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header styles */
+.header {
+    background-color: #eaeaea;
+    border-bottom: 1px solid #ccc;
+}
+
+.menu-bar {
+    display: flex;
+    background-color: #eaeaea;
+    padding: 5px 15px;
+    border-bottom: 1px solid #ccc;
+}
+
+.menu-item {
+    padding: 5px 15px;
+    cursor: pointer;
+}
+
+.menu-item:hover {
+    background-color: #ddd;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+}
+
+.engineer-info {
+    font-weight: bold;
+}
+
+.engineer-name {
+    margin-left: 5px;
+}
+
+.date-navigation {
+    display: flex;
+    align-items: center;
+}
+
+.nav-button {
+    background-color: #eaeaea;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    margin: 0 2px;
+    cursor: pointer;
+}
+
+.current-date {
+    margin: 0 10px;
+    font-weight: bold;
+}
+
+.operator-info {
+    display: flex;
+    align-items: center;
+}
+
+.exit-button {
+    margin-left: 10px;
+    background-color: #f97171;
+    border: 1px solid #e45757;
+    color: white;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.engineer-filters {
+    display: flex;
+    padding: 5px 15px;
+    border-bottom: 1px solid #ccc;
+}
+
+.engineer-button {
+    padding: 5px 15px;
+    margin-right: 5px;
+    border: 1px solid #ccc;
+    background-color: #eaeaea;
+    cursor: pointer;
+}
+
+.engineer-button.active {
+    background-color: #ffff00;
+}
+
+/* Scheduler styles */
+.scheduler {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.scheduler-header {
+    display: grid;
+    grid-template-columns: 80px 120px 100px 180px 150px 1fr;
+    background-color: #eaeaea;
+    border-bottom: 1px solid #ccc;
+    font-weight: bold;
+    padding: 8px 0;
+}
+
+.scheduler-header > div {
+    padding: 0 8px;
+    text-align: center;
+    border-right: 1px solid #ccc;
+}
+
+.scheduler-content {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.task-row {
+    display: grid;
+    grid-template-columns: 80px 120px 100px 180px 150px 1fr;
+    border-bottom: 1px solid #ddd;
+    min-height: 40px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.task-row:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.task-row > div {
+    padding: 8px;
+    border-right: 1px solid #ddd;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.task-time {
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Action buttons */
+.action-buttons {
+    display: flex;
+    padding: 10px;
+    background-color: #eaeaea;
+    border-top: 1px solid #ccc;
+}
+
+.action-button {
+    padding: 8px 12px;
+    margin-right: 8px;
+    border: 1px solid #ccc;
+    background-color: #eaeaea;
+    cursor: pointer;
+}
+
+.action-button.new-task {
+    background-color: #90ee90;
+}
+
+.action-button.edit-task {
+    background-color: #ffeb99;
+}
+
+.action-button.move-task {
+    background-color: #add8e6;
+}
+
+.action-button.print {
+    background-color: #eaeaea;
+}
+
+.action-button.history {
+    background-color: #e6e6fa;
+}
+
+.action-button.edit-time {
+    background-color: #ffcccc;
+}
+
+/* Task form overlay */
+.task-form-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.task-form {
+    background-color: white;
+    padding: 20px;
+    width: 600px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.form-row {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-row label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-row input, .form-row textarea {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.form-row textarea {
+    min-height: 100px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.form-actions button {
+    padding: 8px 15px;
+    margin-left: 10px;
+    border: 1px solid #ccc;
+    background-color: #eaeaea;
+    cursor: pointer;
+}
+
+.form-actions button:first-child {
+    background-color: #90ee90;
+}
