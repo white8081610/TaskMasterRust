@@ -1,32 +1,31 @@
 use dioxus::prelude::*;
 use crate::models::engineer::Engineer;
 
-#[component]
-pub fn EngineerFilter(
-    engineers: Vec<Engineer>,
-    selected: Option<String>,
-    on_select: EventHandler<Option<String>>,
-) -> Element {
-    rsx! {
-        div { class: "engineer-filter",
+#[inline_props]
+pub fn EngineerFilter(cx: Scope, engineers: Vec<Engineer>, selected: String, on_select: EventHandler<Option<String>>) -> Element {
+    cx.render(rsx!{
+        div { class: "engineer-filters",
+            // Кнопка "Все инженеры"
             button {
-                class: format_args!("engineer-button {}", if selected.is_none() { "active" } else { "" }),
-                onclick: move |_| on_select(None),
+                class: format_args!("engineer-button {}", if selected == "Все" { "active" } else { "" }),
+                onclick: move |_| on_select.call(None),
                 "Все"
             }
             
+            // Кнопки для каждого инженера
             {engineers.iter().map(|eng| {
-                let eng_name = eng.name.clone();
-                let is_selected = selected.as_ref().map_or(false, |s| s == &eng.name);
-                rsx! {
+                let name = eng.name.clone();
+                let is_selected = selected == name;
+                
+                rsx!{
                     button {
+                        key: "{name}",
                         class: format_args!("engineer-button {}", if is_selected { "active" } else { "" }),
-                        onclick: move |_| on_select(Some(eng_name.clone())),
-                        background_color: if is_selected { "#FFFF00" } else { "#F0F0F0" },
-                        "{eng.name}"
+                        onclick: move |_| on_select.call(Some(name.clone())),
+                        "{name}"
                     }
                 }
             })}
         }
-    }
+    })
 }

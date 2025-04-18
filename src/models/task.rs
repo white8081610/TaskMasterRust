@@ -1,49 +1,50 @@
-use serde::{Serialize, Deserialize};
 use chrono::NaiveDate;
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub enum TaskStatus {
+    Pending,        // Ожидание
+    InProgress,     // В процессе
+    Completed,      // Завершено
+    Cancelled,      // Отменено
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Task {
     pub id: i64,
     pub date: NaiveDate,
-    pub time: String,
-    pub engineer: String,
-    pub contract: String,
-    pub area: String,
-    pub address: String,
-    pub phone: String,
-    pub description: String,
-    pub status: TaskStatus,
+    pub time: String,           // Время (09:30, 10:00, etc.)
+    pub engineer: String,       // Имя инженера
+    pub contract: String,       // Номер договора
+    pub area: String,           // Район (СО-2, etc.)
+    pub address: String,        // Адрес
+    pub phone: String,          // Номер телефона
+    pub description: String,    // Описание проблемы
+    pub status: TaskStatus,     // Статус задачи
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
-pub enum TaskStatus {
-    Pending,
-    InProgress,
-    Completed,
-    Cancelled,
-}
-
-impl Default for Task {
-    fn default() -> Self {
-        use chrono::Local;
-        
+impl Task {
+    pub fn new(
+        date: NaiveDate,
+        time: String,
+        engineer: String,
+        contract: String,
+        area: String,
+        address: String,
+        phone: String,
+        description: String,
+    ) -> Self {
         Self {
-            id: 0, // New task marker
-            date: Local::now().date_naive(),
-            time: "09:00".to_string(),
-            engineer: "Попов".to_string(),
-            contract: "".to_string(),
-            area: "".to_string(),
-            address: "".to_string(),
-            phone: "".to_string(),
-            description: "".to_string(),
+            id: 0, // ID будет назначен при сохранении в БД
+            date,
+            time,
+            engineer,
+            contract,
+            area,
+            address,
+            phone,
+            description,
             status: TaskStatus::Pending,
         }
-    }
-}
-
-impl Default for TaskStatus {
-    fn default() -> Self {
-        Self::Pending
     }
 }

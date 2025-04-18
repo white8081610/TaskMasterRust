@@ -1,16 +1,8 @@
-use rusqlite::{Connection, Result, params};
+use rusqlite::{Connection, Result};
 
+// Инициализация схемы базы данных
 pub fn init_schema(conn: &Connection) -> Result<()> {
-    // Create engineers table
-    conn.execute(
-        "CREATE TABLE IF NOT EXISTS engineers (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL UNIQUE
-        )",
-        params![],
-    )?;
-    
-    // Create tasks table
+    // Создаем таблицу tasks
     conn.execute(
         "CREATE TABLE IF NOT EXISTS tasks (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -22,19 +14,25 @@ pub fn init_schema(conn: &Connection) -> Result<()> {
             address TEXT NOT NULL,
             phone TEXT NOT NULL,
             description TEXT NOT NULL,
-            status TEXT NOT NULL,
-            FOREIGN KEY (engineer) REFERENCES engineers(name),
-            UNIQUE (date, time, engineer)
+            status TEXT NOT NULL
         )",
-        params![],
+        [],
     )?;
     
-    // Insert default engineers if they don't exist
+    // Создаем таблицу engineers
+    conn.execute(
+        "CREATE TABLE IF NOT EXISTS engineers (
+            name TEXT PRIMARY KEY
+        )",
+        [],
+    )?;
+    
+    // Добавляем некоторых инженеров изначально
     let engineers = ["Попов", "Соломаха", "Ежиков"];
-    for engineer in engineers.iter() {
+    for engineer in engineers {
         conn.execute(
             "INSERT OR IGNORE INTO engineers (name) VALUES (?)",
-            params![engineer],
+            [engineer],
         )?;
     }
     

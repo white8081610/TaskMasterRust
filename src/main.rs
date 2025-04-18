@@ -1,6 +1,3 @@
-use std::sync::Arc;
-use tokio::sync::Mutex;
-
 mod app;
 mod components;
 mod models;
@@ -8,28 +5,30 @@ mod api;
 mod database;
 mod utils;
 
+use std::sync::Arc;
+use tokio::sync::Mutex;
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // Initialize the database
+    // Настройка логирования
+    env_logger::init();
+    
+    // Инициализация базы данных
     let db = database::operations::init_database().await?;
     let db = Arc::new(Mutex::new(db));
     
-    // Start the API server in a separate thread
+    // Запускаем API-сервер в отдельном потоке
     let api_db = db.clone();
     tokio::spawn(async move {
-        api::server::start_server(api_db).await.unwrap();
+        println!("Запуск API-сервера для мобильного доступа...");
+        if let Err(e) = api::server::start_server(api_db).await {
+            eprintln!("Ошибка API-сервера: {}", e);
+        }
     });
     
-    // Launch the Dioxus app
-    dioxus_desktop::launch_cfg(
-        app::App,
-        dioxus_desktop::Config::new()
-            .with_window(
-                dioxus_desktop::WindowBuilder::new()
-                    .with_title("Планировщик заявок версия 0.6.0")
-                    .with_inner_size(dioxus_desktop::LogicalSize::new(1000, 800))
-            )
-    );
+    // Запускаем Dioxus для веб
+    println!("Запуск веб-интерфейса планировщика заявок...");
+    dioxus_web::launch(app::app);
     
     Ok(())
 }

@@ -1,14 +1,12 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Engineer {
     pub name: String,
 }
 
 impl Engineer {
-    pub fn new(name: &str) -> Self {
-        Self {
-            name: name.to_string(),
-        }
+    pub fn new(name: String) -> Self {
+        Self { name }
     }
 }
