@@ -1,10 +1,10 @@
 use dioxus::prelude::*;
 use chrono::NaiveDate;
-use crate::models::task::{Task, TaskStatus};
+use crate::models::task::Task;
 
-#[inline_props]
-pub fn TaskForm(cx: Scope, selected_task: Task, on_save: EventHandler<Task>, on_cancel: EventHandler<()>, engineers: Vec<String>, date: NaiveDate) -> Element {
-    let task = use_state(cx, || selected_task.clone());
+#[component]
+pub fn TaskForm(selected_task: Task, on_save: EventHandler<Task>, on_cancel: EventHandler<()>, engineers: Vec<String>, date: NaiveDate) -> Element {
+    let task = use_state(|| selected_task.clone());
     
     let handle_time_change = move |evt: Event<FormData>| {
         task.set(Task {
@@ -63,7 +63,7 @@ pub fn TaskForm(cx: Scope, selected_task: Task, on_save: EventHandler<Task>, on_
         on_cancel.call(());
     };
     
-    cx.render(rsx!{
+    rsx!{
         div { class: "task-form-overlay",
             div { class: "task-form",
                 h2 { "Детали заявки" }
@@ -174,5 +174,5 @@ pub fn TaskForm(cx: Scope, selected_task: Task, on_save: EventHandler<Task>, on_
                 }
             }
         }
-    })
+    }
 }

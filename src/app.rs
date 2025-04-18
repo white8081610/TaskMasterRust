@@ -104,20 +104,20 @@ pub fn app(cx: Scope) -> Element {
     
     cx.render(rsx!{
         div { class: "app",
-            Header {
+            header {
                 date: *current_date.get(),
                 on_date_change: handle_date_change,
                 selected_engineer: selected_engineer.get().clone().unwrap_or_else(|| "Все".to_string()),
                 operator_name: "Лемесев Д.С.".to_string()
             }
             
-            EngineerFilter {
+            engineer_filter {
                 engineers: engineers.get().clone(),
                 selected: selected_engineer.get().clone().unwrap_or_else(|| "Все".to_string()),
                 on_select: handle_engineer_select
             }
             
-            Scheduler {
+            scheduler {
                 date: *current_date.get(),
                 tasks: tasks.get().clone(),
                 on_task_select: handle_task_select
@@ -175,7 +175,7 @@ pub fn app(cx: Scope) -> Element {
                 });
                 
                 rsx!{
-                    TaskForm {
+                    task_form {
                         selected_task: task,
                         on_save: handle_form_save,
                         on_cancel: handle_form_cancel,

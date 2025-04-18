@@ -1,23 +1,42 @@
 use dioxus::prelude::*;
 use crate::models::task::Task;
+use crate::models::task::TaskStatus;
 
-#[inline_props]
-pub fn TaskRow(cx: Scope, task: Task, on_select: EventHandler<Task>) -> Element {
-    let handle_click = move |_| {
-        on_select.call(task.clone());
-    };
-    
-    cx.render(rsx!{
-        div { 
-            class: "task-row",
-            onclick: handle_click,
+#[component]
+pub fn TaskRow(time: String, tasks: Vec<Task>, selected_task_id: u64, on_task_select: EventHandler<Task>) -> Element {
+    rsx!{
+        div { class: "time-row",
+            // Ячейка с временем
+            div { class: "time-cell", "{time}" }
             
-            div { class: "task-time", "{task.time}" }
-            div { class: "task-contract", "{task.contract}" }
-            div { class: "task-area", "{task.area}" }
-            div { class: "task-address", "{task.address}" }
-            div { class: "task-phone", "{task.phone}" }
-            div { class: "task-description", "{task.description}" }
+            // Ячейка с задачами
+            div { class: "tasks-cell",
+                {tasks.iter().map(|task| {
+                    let is_selected = task.id == *selected_task_id;
+                    let status_class = match task.status {
+                        TaskStatus::Pending => "status-pending",
+                        TaskStatus::InProgress => "status-in-progress",
+                        TaskStatus::Completed => "status-completed",
+                        TaskStatus::Cancelled => "status-cancelled",
+                    };
+                    
+                    let task_clone = task.clone();
+                    
+                    rsx!{
+                        div {
+                            key: "{task.id}",
+                            class: format_args!("task-card {} {}", status_class, if is_selected { "selected" } else { "" }),
+                            onclick: move |_| on_task_select.call(task_clone.clone()),
+                            
+                            div { class: "task-header",
+                                div { class: "task-engineer", "{task.engineer}" }
+                                div { class: "task-address", "{task.address}" }
+                            }
+                            div { class: "task-description", "{task.description}" }
+                        }
+                    }
+                })}
+            }
         }
-    })
+    }
 }

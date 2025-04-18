@@ -1,28 +1,29 @@
-use chrono::{NaiveDate, Duration, Datelike, Weekday};
+use chrono::{NaiveDate, Datelike};
 
-// Format date as "ВС.DD.MM.YYYY"
+// Форматирует дату в русском формате (например, "10 Апреля 2025, Четверг")
 pub fn format_date_russian(date: &NaiveDate) -> String {
-    let weekday_prefix = match date.weekday() {
-        Weekday::Mon => "ПН",
-        Weekday::Tue => "ВТ",
-        Weekday::Wed => "СР",
-        Weekday::Thu => "ЧТ",
-        Weekday::Fri => "ПТ",
-        Weekday::Sat => "СБ",
-        Weekday::Sun => "ВС",
-    };
+    // Массивы для русских названий месяцев и дней недели
+    let months = [
+        "Января", "Февраля", "Марта", "Апреля", "Мая", "Июня",
+        "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря"
+    ];
     
-    format!("{}.{:02}.{:02}.{}", weekday_prefix, date.day(), date.month(), date.year())
-}
-
-// Get the start of the week (Monday) for a given date
-pub fn start_of_week(date: &NaiveDate) -> NaiveDate {
-    let weekday = date.weekday().num_days_from_monday();
-    *date - Duration::days(weekday as i64)
-}
-
-// Get the end of the week (Sunday) for a given date
-pub fn end_of_week(date: &NaiveDate) -> NaiveDate {
-    let weekday = date.weekday().num_days_from_monday();
-    *date + Duration::days(6 - weekday as i64)
+    let weekdays = [
+        "Понедельник", "Вторник", "Среда", "Четверг", 
+        "Пятница", "Суббота", "Воскресенье"
+    ];
+    
+    let day = date.day();
+    let month_idx = (date.month() as usize) - 1;
+    let year = date.year();
+    
+    // В Rust 0 - это понедельник, а 6 - воскресенье
+    let weekday_idx = date.weekday().num_days_from_monday() as usize;
+    
+    format!("{} {}, {}, {}", 
+        day, 
+        months[month_idx], 
+        year,
+        weekdays[weekday_idx]
+    )
 }

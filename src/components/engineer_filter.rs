@@ -1,13 +1,13 @@
 use dioxus::prelude::*;
 use crate::models::engineer::Engineer;
 
-#[inline_props]
-pub fn EngineerFilter(cx: Scope, engineers: Vec<Engineer>, selected: String, on_select: EventHandler<Option<String>>) -> Element {
-    cx.render(rsx!{
+#[component]
+pub fn EngineerFilter(engineers: Vec<Engineer>, selected: String, on_select: EventHandler<Option<String>>) -> Element {
+    rsx!{
         div { class: "engineer-filters",
             // Кнопка "Все инженеры"
             button {
-                class: format_args!("engineer-button {}", if selected == "Все" { "active" } else { "" }),
+                class: format_args!("engineer-button {}", if selected.as_str() == "Все" { "active" } else { "" }),
                 onclick: move |_| on_select.call(None),
                 "Все"
             }
@@ -15,7 +15,9 @@ pub fn EngineerFilter(cx: Scope, engineers: Vec<Engineer>, selected: String, on_
             // Кнопки для каждого инженера
             {engineers.iter().map(|eng| {
                 let name = eng.name.clone();
-                let is_selected = selected == name;
+                let name_str = name.as_str();
+                let selected_str = selected.as_str();
+                let is_selected = selected_str == name_str;
                 
                 rsx!{
                     button {
@@ -27,5 +29,5 @@ pub fn EngineerFilter(cx: Scope, engineers: Vec<Engineer>, selected: String, on_
                 }
             })}
         }
-    })
+    }
 }

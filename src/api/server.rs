@@ -28,27 +28,26 @@ pub async fn start_server(db: Arc<Mutex<Connection>>) -> Result<(), Box<dyn std:
     let addr = std::net::SocketAddr::from(([0, 0, 0, 0], 3001));
     println!("API сервер работает на http://{}", addr);
     
-    axum::Server::bind(&addr)
-        .serve(app.into_make_service())
-        .await?;
+    let listener = tokio::net::TcpListener::bind(addr).await?;
+    axum::serve(listener, app).await?;
     
     Ok(())
 }
 
 // Обработчик получения всех задач
-async fn get_tasks(State(state): State<Arc<AppState>>) -> Result<Json<Vec<Task>>, StatusCode> {
+async fn get_tasks(State(_state): State<Arc<AppState>>) -> Result<Json<Vec<Task>>, StatusCode> {
     // Тут будет получение задач из БД
     Ok(Json(Vec::new()))
 }
 
 // Обработчик получения информации о конкретной задаче
-async fn get_task(State(state): State<Arc<AppState>>) -> Result<Json<Task>, StatusCode> {
+async fn get_task(State(_state): State<Arc<AppState>>) -> Result<Json<Task>, StatusCode> {
     // Тут будет получение задачи из БД
     Err(StatusCode::NOT_FOUND)
 }
 
 // Обработчик создания новой задачи
-async fn create_task(State(state): State<Arc<AppState>>, Json(task): Json<Task>) -> Result<Json<Task>, StatusCode> {
+async fn create_task(State(_state): State<Arc<AppState>>, Json(_task): Json<Task>) -> Result<Json<Task>, StatusCode> {
     // Тут будет сохранение задачи в БД
     Err(StatusCode::INTERNAL_SERVER_ERROR)
 }

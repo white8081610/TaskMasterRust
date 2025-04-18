@@ -1,12 +1,18 @@
-use serde::{Deserialize, Serialize};
+use serde::{Serialize, Deserialize};
 
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Engineer {
     pub name: String,
 }
 
 impl Engineer {
     pub fn new(name: String) -> Self {
-        Self { name }
+        Engineer { name }
+    }
+}
+
+impl PartialEq for Engineer {
+    fn eq(&self, other: &Self) -> bool {
+        self.name == other.name
     }
 }

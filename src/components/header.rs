@@ -2,8 +2,8 @@ use dioxus::prelude::*;
 use chrono::{Duration, NaiveDate};
 use crate::utils::date_utils::format_date_russian;
 
-#[inline_props]
-pub fn Header(cx: Scope, date: NaiveDate, on_date_change: EventHandler<NaiveDate>, selected_engineer: String, operator_name: String) -> Element {
+#[component]
+pub fn Header(date: NaiveDate, on_date_change: EventHandler<NaiveDate>, selected_engineer: String, operator_name: String) -> Element {
     let handle_prev_day = move |_| {
         let new_date = *date - Duration::days(1);
         on_date_change.call(new_date);
@@ -27,7 +27,7 @@ pub fn Header(cx: Scope, date: NaiveDate, on_date_change: EventHandler<NaiveDate
     let formatted_date = format_date_russian(&date);
     let engineer_display = selected_engineer.clone();
     
-    cx.render(rsx!{
+    rsx!{
         div { class: "header",
             div { class: "menu-bar",
                 div { class: "menu-item", "Сервис" }
@@ -68,5 +68,5 @@ pub fn Header(cx: Scope, date: NaiveDate, on_date_change: EventHandler<NaiveDate
                 }
             }
         }
-    })
+    }
 }
